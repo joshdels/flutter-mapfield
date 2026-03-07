@@ -1,43 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:mapfield/features/mapView/section/map_section.dart';
+import 'package:mapfield/features/homeView/section/home_section.dart';
+import 'package:mapfield/features/newProjectView/section/newproject_section.dart';
+import 'package:mapfield/features/cloudProjectView/section/cloudproject_section.dart';
+import 'package:mapfield/features/localProjectView/section/localproject_section.dart';
+import 'package:mapfield/core/routing/route_names.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
-
       case RouteNames.home:
-        return MaterialPageRoute(builder: (_) => const HomePage());
+        return MaterialPageRoute(builder: (_) => const HomeSection());
 
       case RouteNames.map:
         return MaterialPageRoute(builder: (_) => const MapSection());
 
+      case RouteNames.newProject:
+        return MaterialPageRoute(builder: (_) => const NewProjectSection());
+
+      case RouteNames.cloudProject:
+        return MaterialPageRoute(builder: (_) => const CloudProjectSection());
+
+      case RouteNames.localProject:
+        return MaterialPageRoute(builder: (_) => const LocalProjectSection());
+
       default:
         return MaterialPageRoute(
-          builder: (_) => const Scaffold(
-            body: Center(child: Text("Page not found")),
-          ),
+          builder: (_) =>
+              const Scaffold(body: Center(child: Text("Page not found"))),
         );
     }
   }
 }
-
-
-// import 'package:flutter/material.dart';
-// import 'core/routing/app_router.dart';
-// import 'core/routing/route_names.dart';
-
-// void main() {
-//   runApp(const MainApp());
-// }
-
-// class MainApp extends StatelessWidget {
-//   const MainApp({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       initialRoute: RouteNames.home,
-//       onGenerateRoute: AppRouter.generateRoute,
-//       debugShowCheckedModeBanner: false,
-//     );
-//   }
-// }

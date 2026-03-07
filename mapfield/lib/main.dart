@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mapfield/features/mapview/section/map_section.dart';
-import 'package:mapfield/features/home/section/home_section.dart';
+import 'package:mapfield/core/routing/app_router.dart';
+import 'package:mapfield/core/routing/route_names.dart';
 
 void main() {
   runApp(const MainApp());
@@ -11,9 +11,10 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: HomeSection(),
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
+      initialRoute: RouteNames.home,
+      onGenerateRoute: AppRouter.generateRoute,
     );
   }
 }

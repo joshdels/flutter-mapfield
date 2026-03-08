@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import 'package:mapfield/features/homeView/widget/logo_view.dart';
+import 'package:mapfield/shared/widgets/logo_view.dart';
 import 'package:mapfield/features/loginView/widgets/signin_view.dart';
 import 'package:mapfield/features/loginView/widgets/userinput_view.dart';
 import 'package:mapfield/features/loginView/widgets/forgot_view.dart';

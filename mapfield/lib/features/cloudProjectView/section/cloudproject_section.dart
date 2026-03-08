@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:mapfield/features/newProjectView/widgets/floating_view.dart";
+import "package:mapfield/features/newProjectView/widgets/create_view.dart";
 
 class CloudProjectSection extends StatelessWidget {
   const CloudProjectSection({super.key});

@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:mapfield/features/newProjectView/widgets/floating_view.dart";
+import "package:mapfield/features/newProjectView/widgets/create_view.dart";
 import "package:mapfield/features/newProjectView/widgets/title_view.dart";
 import "package:mapfield/features/newProjectView/widgets/fields_view.dart";
 import "package:mapfield/features/newProjectView/widgets/basemap_view.dart";

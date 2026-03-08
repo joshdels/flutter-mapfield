@@ -12,10 +12,9 @@ class LoginSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Cloud Projects"),
+        title: Text("Log In"),
         centerTitle: true,
         leading: BackButton(),
-        // actions: [IconButton(onPressed: () {}, icon: Icon(Icons.abc))],
       ),
       body: Padding(
         padding: EdgeInsetsGeometry.all(30),

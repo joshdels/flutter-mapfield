@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:mapfield/features/localProjectView/widget/search_view.dart";
+import "package:mapfield/shared/widgets/search_view.dart";
 import "package:mapfield/features/localProjectView/widget/projects_view.dart";
 import "package:mapfield/features/localProjectView/widget/create_project_view.dart";
 
@@ -10,7 +10,7 @@ class LocalProjectSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Projects"),
+        title: const Text("Local Projects"),
         centerTitle: true,
         leading: const BackButton(),
       ),

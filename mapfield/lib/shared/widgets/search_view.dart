@@ -8,7 +8,7 @@ class SearchProjectView extends StatelessWidget {
     return TextField(
       textAlign: TextAlign.left,
       decoration: InputDecoration(
-        fillColor: Colors.grey.shade300,
+        fillColor: Colors.grey.shade200,
         filled: true,
         prefixIcon: Icon(Icons.search),
         hintText: "Search for Projects...",

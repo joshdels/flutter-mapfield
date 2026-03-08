@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:mapfield/core/routing/route_names.dart';
 
 class CreateProjectView extends StatelessWidget {
   const CreateProjectView({super.key});
@@ -16,8 +17,10 @@ class CreateProjectView extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
         ),
-        onPressed: () {},
-        child: Text("Create Project"),
+        onPressed: () {
+          Navigator.pushNamed(context, RouteNames.newProject);
+        },
+        child: Text("Create New Project"),
       ),
     );
   }

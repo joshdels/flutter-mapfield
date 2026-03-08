@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mapfield/core/routing/route_names.dart';
 
 class AppBarView extends StatelessWidget implements PreferredSizeWidget {
   const AppBarView({super.key});
@@ -22,7 +23,9 @@ class AppBarView extends StatelessWidget implements PreferredSizeWidget {
               padding: EdgeInsets.zero,
               icon: const Icon(Icons.person, size: 18),
               color: Colors.white,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, RouteNames.login);
+              },
             ),
           ),
         ),

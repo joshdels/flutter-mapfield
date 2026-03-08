@@ -4,4 +4,5 @@ class RouteNames {
   static const newProject = "/new-project";
   static const cloudProject = "/cloud-project";
   static const localProject = "/local-project";
+  static const login = "/login";
 }

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mapfield/core/routing/route_names.dart';
+
 import 'package:mapfield/features/mapView/section/map_section.dart';
 import 'package:mapfield/features/homeView/section/home_section.dart';
 import 'package:mapfield/features/newProjectView/section/newproject_section.dart';
 import 'package:mapfield/features/cloudProjectView/section/cloudproject_section.dart';
 import 'package:mapfield/features/localProjectView/section/localproject_section.dart';
-import 'package:mapfield/core/routing/route_names.dart';
+import 'package:mapfield/features/loginView/section/login_section.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -23,6 +25,9 @@ class AppRouter {
 
       case RouteNames.localProject:
         return MaterialPageRoute(builder: (_) => const LocalProjectSection());
+
+      case RouteNames.login:
+        return MaterialPageRoute(builder: (_) => const LoginSection());
 
       default:
         return MaterialPageRoute(

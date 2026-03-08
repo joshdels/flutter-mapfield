@@ -1,9 +1,9 @@
 import "package:flutter/material.dart";
-import "package:mapfield/features/newProjectView/widget/floating_view.dart";
-import "package:mapfield/features/newProjectView/widget/title_view.dart";
-import "package:mapfield/features/newProjectView/widget/fields_view.dart";
-import "package:mapfield/features/newProjectView/widget/basemap_view.dart";
-import "package:mapfield/features/newProjectView/widget/add_field_view.dart";
+import "package:mapfield/features/newProjectView/widgets/floating_view.dart";
+import "package:mapfield/features/newProjectView/widgets/title_view.dart";
+import "package:mapfield/features/newProjectView/widgets/fields_view.dart";
+import "package:mapfield/features/newProjectView/widgets/basemap_view.dart";
+import "package:mapfield/features/newProjectView/widgets/add_field_view.dart";
 
 class NewProjectSection extends StatelessWidget {
   const NewProjectSection({super.key});

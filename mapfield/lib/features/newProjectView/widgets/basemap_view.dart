@@ -1,52 +1,143 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/basemap_provider.dart';
 
-class BasemapView extends StatelessWidget {
+final selectedBasemapProvider =
+    NotifierProvider<SelectedBasemapNotifier, String>(
+      SelectedBasemapNotifier.new,
+    );
+
+class BasemapView extends ConsumerWidget {
   const BasemapView({super.key});
 
+  final List<Map<String, String>> basemaps = const [
+    {"name": "Satellite", "image": "basemap/satellite.jpg"},
+    {"name": "Dark", "image": "basemap/black.jpg"},
+    {"name": "Streets", "image": "basemap/streets.jpg"},
+    {"name": "Hybrid", "image": "basemap/Basemap.png"},
+  ];
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedValue = ref.watch(selectedBasemapProvider);
+
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 30),
+      padding: const EdgeInsets.symmetric(vertical: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: <Widget>[
-              Icon(Icons.location_city),
-              SizedBox(width: 8),
-              Text("BaseMap", style: TextStyle(fontWeight: FontWeight.bold)),
+              Icon(Icons.map),
+              SizedBox(width: 4),
+              Text("BaseMap"),
             ],
           ),
 
-          const SizedBox(height: 20),
-
           SizedBox(
             height: 120,
-            child: ListView(
+            child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              children: [
-                basemapCard("Satellite"),
-                basemapCard("Street"),
-                basemapCard("Terrain"),
-                basemapCard("Hybrid"),
-              ],
+              itemCount: basemaps.length,
+              itemBuilder: (context, index) {
+                final item = basemaps[index];
+                final name = item['name']!;
+                final isSelected = selectedValue == name;
+                return GestureDetector(
+                  onTap: () => ref
+                      .read(selectedBasemapProvider.notifier)
+                      .setBasemap(name),
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: BasemapCard(
+                      name: item['name']!,
+                      imagePath: item['image']!,
+                      isSelected: isSelected,
+                    ),
+                  ),
+                );
+              },
             ),
           ),
         ],
       ),
     );
   }
+}
 
-  Widget basemapCard(String name) {
-    return Container(
-      width: 120,
-      margin: const EdgeInsets.only(right: 10),
-      decoration: BoxDecoration(
-        color: Colors.grey.shade300,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      alignment: Alignment.center,
-      child: Text(name),
+class BasemapCard extends StatelessWidget {
+  final String name;
+  final String imagePath;
+  final bool isSelected;
+
+  const BasemapCard({
+    super.key,
+    required this.name,
+    required this.imagePath,
+    required this.isSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          width: 150,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: isSelected ? Colors.green : Colors.grey.shade300,
+              width: 2,
+            ),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Column(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Image.asset(imagePath, fit: BoxFit.cover),
+                  ),
+                ),
+
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Text(
+                      name,
+                      style: TextStyle(
+                        fontWeight: isSelected
+                            ? FontWeight.bold
+                            : FontWeight.normal,
+                        fontSize: 12,
+                        color: isSelected ? Colors.green : Colors.black87,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        if (isSelected)
+          Positioned(
+            top: 6,
+            right: 6,
+            child: Container(
+              padding: const EdgeInsets.all(2),
+              decoration: const BoxDecoration(
+                color: Colors.green,
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.check, color: Colors.white, size: 16),
+            ),
+          ),
+      ],
     );
   }
 }

@@ -6,8 +6,8 @@ class LogoView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(20),
-      child: Image.asset("logo.png", width: 200),
+      padding: EdgeInsets.all(10),
+      child: Image.asset("assets/logo.png", width: 180),
     );
   }
 }

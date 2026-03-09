@@ -19,7 +19,12 @@ class NewProjectSection extends StatelessWidget {
       body: Padding(
         padding: EdgeInsetsGeometry.all(30),
         child: Column(
-          children: [ProjectNameView(), BasemapView(), FieldsView(), AddField()],
+          children: [
+            ProjectNameView(),
+            BasemapView(),
+            FieldsView(),
+            AddField(),
+          ],
         ),
       ),
       bottomNavigationBar: CreateProjectView(),

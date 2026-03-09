@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/fields_provider.dart';
 
-class AddField extends StatelessWidget {
+class AddField extends ConsumerWidget {
   const AddField({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: Center(
-        child: TextButton.icon(
-          onPressed: () {},
-          icon: const Icon(Icons.add),
-          label: const Text("Add New Field"),
-        ),
-      ),
+  Widget build(BuildContext context, WidgetRef ref) {
+    return TextButton.icon(
+      onPressed: () => ref.read(fieldsProvider.notifier).addField(),
+      icon: const Icon(Icons.add),
+      label: const Text("Add Field"),
     );
   }
 }

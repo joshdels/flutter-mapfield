@@ -11,7 +11,7 @@ class ProjectNameView extends StatelessWidget {
         Text("Project Name", textAlign: TextAlign.left),
         TextField(
           decoration: InputDecoration(
-            fillColor: Colors.grey.shade300,
+            fillColor: Colors.grey.shade200,
             filled: true,
 
             enabledBorder: OutlineInputBorder(

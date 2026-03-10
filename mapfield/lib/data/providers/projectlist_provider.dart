@@ -9,8 +9,7 @@ final projectListProvider = Provider<List<ProjectModel>>((ref) {
 });
 
 final projectListLatestProvider = Provider<List<ProjectModel>>((ref) {
-  final repository = ref.watch(projectRepositoryProvider);
-  final allProjects = repository.getAllProjects();
+  final allProjects = ref.watch(projectListProvider);
 
-  return allProjects.reversed.take(3).toList();
+  return allProjects.reversed.take(3).toList().cast<ProjectModel>();
 });

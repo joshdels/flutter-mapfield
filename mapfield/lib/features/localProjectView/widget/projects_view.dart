@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mapfield/data/models/project_models.dart';
 import 'package:mapfield/data/providers/projectlist_provider.dart';
+import 'package:mapfield/features/localProjectView/widget/bottom_modal_view.dart';
+import 'package:mapfield/core/routing/route_names.dart';
 
 class ProjectsView extends ConsumerWidget {
   const ProjectsView({super.key});
@@ -44,7 +46,15 @@ class ProjectItem extends StatelessWidget {
         contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
         title: Text(project.name),
         subtitle: Text("Updated naba?"),
-        trailing: IconButton(onPressed: () {}, icon: Icon(Icons.more_vert)),
+        onTap: () {
+          Navigator.pushNamed(context, RouteNames.map);
+        },
+        trailing: IconButton(
+          onPressed: () {
+            openProjectModal(context, project);
+          },
+          icon: Icon(Icons.more_vert),
+        ),
       ),
     );
   }

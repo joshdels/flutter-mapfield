@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mapfield/data/models/project_models.dart';
+import 'package:mapfield/core/routing/route_names.dart';
 
 void openMoreModal(BuildContext context) {
   showModalBottomSheet(
@@ -27,15 +27,9 @@ void openMoreModal(BuildContext context) {
             ListTile(
               leading: const Icon(Icons.home),
               title: const Text("Home"),
-              onTap: () {},
-            ),
-
-            Divider(),
-
-            ListTile(
-              leading: const Icon(Icons.delete),
-              title: const Text("Delete Project"),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, RouteNames.home);
+              },
             ),
           ],
         ),

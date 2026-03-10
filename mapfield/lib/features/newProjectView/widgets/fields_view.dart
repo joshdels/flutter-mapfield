@@ -49,32 +49,46 @@ class FieldsList extends ConsumerWidget {
   }
 }
 
-class FieldRow extends ConsumerWidget {
+class FieldRow extends ConsumerStatefulWidget {
   final ProjectField field;
   final List<String> types;
 
   const FieldRow({super.key, required this.field, required this.types});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final controller = TextEditingController(text: field.name);
+  ConsumerState<FieldRow> createState() => _FieldRowState();
+}
 
-    controller.selection = TextSelection.fromPosition(
-      TextPosition(offset: controller.text.length),
-    );
+class _FieldRowState extends ConsumerState<FieldRow> {
+  late TextEditingController _controller;
 
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.field.name);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         children: [
-          // Name TextField
           Expanded(
             flex: 3,
             child: TextField(
-              controller: controller,
-              onChanged: (val) => ref
-                  .read(fieldsProvider.notifier)
-                  .updateField(field.id, name: val),
+              controller: _controller,
+              onChanged: (val) {
+                ref
+                    .read(fieldsProvider.notifier)
+                    .updateField(widget.field.id, name: val);
+              },
               decoration: InputDecoration(
                 hintText: "Field Name",
                 isDense: true,
@@ -86,18 +100,21 @@ class FieldRow extends ConsumerWidget {
             ),
           ),
           const SizedBox(width: 10),
-
           Expanded(
             flex: 2,
             child: DropdownButtonFormField<String>(
-              initialValue: field.type,
+              initialValue: widget.field.type,
               isDense: true,
-              items: types
+              items: widget.types
                   .map((t) => DropdownMenuItem(value: t, child: Text(t)))
                   .toList(),
-              onChanged: (val) => ref
-                  .read(fieldsProvider.notifier)
-                  .updateField(field.id, type: val),
+              onChanged: (val) {
+                if (val != null) {
+                  ref
+                      .read(fieldsProvider.notifier)
+                      .updateField(widget.field.id, type: val);
+                }
+              },
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 10,
@@ -109,11 +126,10 @@ class FieldRow extends ConsumerWidget {
               ),
             ),
           ),
-
           IconButton(
             icon: const Icon(Icons.delete_outline, color: Colors.redAccent),
             onPressed: () =>
-                ref.read(fieldsProvider.notifier).removeField(field.id),
+                ref.read(fieldsProvider.notifier).removeField(widget.field.id),
           ),
         ],
       ),

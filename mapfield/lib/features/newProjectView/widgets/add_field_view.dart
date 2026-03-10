@@ -7,8 +7,12 @@ class AddField extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    void handlePress() {
+      ref.read(fieldsProvider.notifier).addField();
+    }
+
     return TextButton.icon(
-      onPressed: () => ref.read(fieldsProvider.notifier).addField(),
+      onPressed: handlePress,
       icon: const Icon(Icons.add),
       label: const Text("Add Field"),
     );

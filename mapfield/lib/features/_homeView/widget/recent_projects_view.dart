@@ -24,9 +24,7 @@ class ProjectView extends ConsumerWidget {
           child: recentProjectsAsync.when(
             data: (List<ProjectModel> projects) {
               if (projects.isEmpty) {
-                return const Center(
-                  child: Text("No projects yet."),
-                );
+                return const Center(child: Text("No projects yet."));
               }
 
               return ListView.builder(
@@ -65,8 +63,8 @@ class ProjectItem extends StatelessWidget {
         ),
         title: Text(project.name),
         subtitle: const Text("Updated naba?"),
-        onLongPress: () {
-          Navigator.pushNamed(context, RouteNames.map);
+        onTap: () {
+          Navigator.pushNamed(context, RouteNames.map, arguments: project.id);
         },
       ),
     );

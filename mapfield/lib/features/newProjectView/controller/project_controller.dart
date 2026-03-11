@@ -11,27 +11,30 @@ class ProjectController extends Notifier<ProjectSaveStatus> {
   @override
   ProjectSaveStatus build() => ProjectSaveStatus.idle;
 
-  Future<void> createProject() async {
+  Future<String?> createProject() async {
     state = ProjectSaveStatus.loading;
 
     try {
       final name = ref.read(projectnameProvider);
-      final basemap = ref.read(selectedBasemapProvider);
+      final basemapConfig = ref.read(selectedBasemapProvider);
       final rawFields = ref.read(fieldsProvider);
 
       if (name.isEmpty) throw Exception("Project name cannot be empty");
 
       final mappedFields = rawFields.map((f) => f.toJson()).toList();
 
+      final String newId = DateTime.now().millisecondsSinceEpoch.toString();
+
       final newProject = ProjectModel(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        id: newId,
         name: name,
-        selectedBasemap: basemap,
+        selectedBasemap: basemapConfig.name,
+        tileUrl: basemapConfig.tileUrl,
         createdAt: DateTime.now(),
         createdBy: "Current User",
         lastOpened: DateTime.now(),
         fields: mappedFields,
-        zoomLevel: 12.0,
+        zoomLevel: 2.0,
         centerLatitude: 0.0,
         centerLongitude: 0.0,
       );
@@ -41,9 +44,11 @@ class ProjectController extends Notifier<ProjectSaveStatus> {
       _resetForm();
 
       state = ProjectSaveStatus.success;
+      return newId;
     } catch (e) {
       print("Error creating project: $e");
       state = ProjectSaveStatus.error;
+      return null;
     }
   }
 

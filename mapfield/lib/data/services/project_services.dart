@@ -18,12 +18,21 @@ class DatabaseService {
     String path;
     if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
       final directory = await getApplicationSupportDirectory();
-      path = join(directory.path, 'my_app_database.db');
+      path = join(directory.path, 'my_app_database_v2.db');
     } else {
       path = join(await getDatabasesPath(), 'my_app_database.db');
     }
 
-    return await openDatabase(path, version: 1, onCreate: _createDb);
+    return await openDatabase(
+      path,
+      version: 1,
+      onCreate: _createDb,
+      // onUpgrade: (db, oldVersion, newVersion) async {
+      //   if (oldVersion < 2) {
+      //     await db.execute('ALTER TABLE $_tableName ADD COLUMN tileUrl TEXT');
+      //   }
+      // },
+    );
   }
 
   Future<void> _createDb(Database db, int version) async {
@@ -32,6 +41,7 @@ class DatabaseService {
         id TEXT PRIMARY KEY,
         name TEXT NOT NULL,
         selectedBasemap TEXT,
+        tileUrl TEXT,
         createdAt TEXT NOT NULL,
         createdBy TEXT,
         lastOpened TEXT,

@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:mapfield/features/newProjectView/controller/project_controller.dart";
+import 'package:mapfield/core/routing/route_names.dart';
 
 class CreateProjectView extends ConsumerWidget {
   const CreateProjectView({super.key});
@@ -11,7 +12,13 @@ class CreateProjectView extends ConsumerWidget {
     final isLoading = status == ProjectSaveStatus.loading;
 
     void handlePress() async {
-      await ref.read(projectControllerProvider.notifier).createProject();
+      final String? newId = await ref
+          .read(projectControllerProvider.notifier)
+          .createProject();
+
+      if (newId != null && context.mounted) {
+        Navigator.pushNamed(context, RouteNames.map, arguments: newId);
+      }
     }
 
     return BottomAppBar(

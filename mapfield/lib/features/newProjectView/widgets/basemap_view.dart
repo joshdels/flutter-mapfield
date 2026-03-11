@@ -1,25 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/basemap_provider.dart';
+import 'package:mapfield/data/models/basemap_models.dart';
 
 final selectedBasemapProvider =
-    NotifierProvider<SelectedBasemapNotifier, String>(
+    NotifierProvider<SelectedBasemapNotifier, BasemapConfig>(
       SelectedBasemapNotifier.new,
     );
 
 class BasemapView extends ConsumerWidget {
   const BasemapView({super.key});
 
-  final List<Map<String, String>> basemaps = const [
-    {"name": "Satellite", "image": "assets/basemap/satellite.jpg"},
-    {"name": "Dark", "image": "assets/basemap/black.jpg"},
-    {"name": "Streets", "image": "assets/basemap/streets.jpg"},
-    {"name": "Hybrid", "image": "assets/basemap/Basemap.png"},
-  ];
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedValue = ref.watch(selectedBasemapProvider);
+    final selectedConfig = ref.watch(selectedBasemapProvider);
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
@@ -38,20 +32,19 @@ class BasemapView extends ConsumerWidget {
             height: 120,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: basemaps.length,
+              itemCount: availableBasemaps.length,
               itemBuilder: (context, index) {
-                final item = basemaps[index];
-                final name = item['name']!;
-                final isSelected = selectedValue == name;
+                final config = availableBasemaps[index];
+                final isSelected = selectedConfig.name == config.name;
                 return GestureDetector(
                   onTap: () => ref
                       .read(selectedBasemapProvider.notifier)
-                      .setBasemap(name),
+                      .setBasemap(config),
                   child: Padding(
                     padding: const EdgeInsets.only(right: 10),
                     child: BasemapCard(
-                      name: item['name']!,
-                      imagePath: item['image']!,
+                      name: config.name,
+                      imagePath: config.imagePath,
                       isSelected: isSelected,
                     ),
                   ),

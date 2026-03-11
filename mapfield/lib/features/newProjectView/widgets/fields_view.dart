@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/fields_provider.dart';
-import '../../../data/models/project_field.dart';
+import '../../../data/models/project_field_models.dart';
 
 class FieldsView extends StatelessWidget {
   const FieldsView({super.key});

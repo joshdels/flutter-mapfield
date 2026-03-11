@@ -4,6 +4,7 @@ class ProjectModel {
   final String id;
   final String name;
   final String selectedBasemap;
+  final String tileUrl;
   final DateTime createdAt;
   final String createdBy;
   final DateTime lastOpened;
@@ -16,6 +17,7 @@ class ProjectModel {
     required this.id,
     required this.name,
     required this.selectedBasemap,
+    required this.tileUrl,
     required this.createdAt,
     required this.createdBy,
     required this.lastOpened,
@@ -30,6 +32,9 @@ class ProjectModel {
       id: json['id']?.toString() ?? json['id']?.toString() ?? '',
       name: json['name'] ?? '',
       selectedBasemap: json['selectedBasemap'] ?? 'streets',
+      tileUrl:
+          json['tileUrl'] ??
+          'http://mt0.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}',
       createdAt: json['createdAt'] != null
           ? DateTime.parse(json['createdAt'])
           : DateTime.now(),
@@ -51,6 +56,7 @@ class ProjectModel {
       'id': id,
       'name': name,
       'selectedBasemap': selectedBasemap,
+      'tileUrl': tileUrl,
       'createdAt': createdAt.toIso8601String(),
       'createdBy': createdBy,
       'lastOpened': lastOpened.toIso8601String(),
@@ -59,5 +65,10 @@ class ProjectModel {
       'centerLatitude': centerLatitude,
       'centerLongitude': centerLongitude,
     };
+  }
+
+  @override
+  String toString() {
+    return 'ProjectModel(id: $id, name: $name, fieldsCount: ${fields.length}, selectedBasemap: $selectedBasemap,  tileUrl: $tileUrl,)';
   }
 }

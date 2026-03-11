@@ -7,7 +7,7 @@ class ForgotView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 20),
+        padding: EdgeInsets.symmetric(vertical: 5),
         child: TextButton(
           onPressed: () {},
           child: const Text("Forgot Password"),

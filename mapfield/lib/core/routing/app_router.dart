@@ -15,7 +15,10 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const HomeSection());
 
       case RouteNames.map:
-        return MaterialPageRoute(builder: (_) => const MapSection());
+        return MaterialPageRoute(
+          builder: (_) => const MapSection(),
+          settings: settings,
+        );
 
       case RouteNames.newProject:
         return MaterialPageRoute(builder: (_) => const NewProjectSection());

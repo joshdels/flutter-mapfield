@@ -10,7 +10,7 @@ class ProjectsView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final projectsAsync = ref.watch(projectListProvider);
+    final projectsAsync = ref.watch(filteredProjectsProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,7 +55,7 @@ class ProjectItem extends ConsumerWidget {
         title: Text(project.name),
         subtitle: Text("Updated naba?"),
         onTap: () {
-          Navigator.pushNamed(context, RouteNames.map);
+          Navigator.pushNamed(context, RouteNames.map, arguments: project.id);
         },
         trailing: IconButton(
           onPressed: () {

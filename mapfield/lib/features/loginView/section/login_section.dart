@@ -17,7 +17,7 @@ class LoginSection extends StatelessWidget {
         leading: BackButton(),
       ),
       body: Padding(
-        padding: EdgeInsetsGeometry.all(30),
+        padding: EdgeInsetsGeometry.all(20),
         child: Center(
           child: Column(
             children: [

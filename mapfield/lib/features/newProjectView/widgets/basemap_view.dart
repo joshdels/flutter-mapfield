@@ -11,10 +11,10 @@ class BasemapView extends ConsumerWidget {
   const BasemapView({super.key});
 
   final List<Map<String, String>> basemaps = const [
-    {"name": "Satellite", "image": "basemap/satellite.jpg"},
-    {"name": "Dark", "image": "basemap/black.jpg"},
-    {"name": "Streets", "image": "basemap/streets.jpg"},
-    {"name": "Hybrid", "image": "basemap/Basemap.png"},
+    {"name": "Satellite", "image": "assets/basemap/satellite.jpg"},
+    {"name": "Dark", "image": "assets/basemap/black.jpg"},
+    {"name": "Streets", "image": "assets/basemap/streets.jpg"},
+    {"name": "Hybrid", "image": "assets/basemap/Basemap.png"},
   ];
 
   @override

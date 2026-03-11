@@ -10,35 +10,43 @@ class ProjectsView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final projects = ref.watch(projectListProvider);
+    final projectsAsync = ref.watch(projectListProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Download Projects", textAlign: TextAlign.left),
-        Divider(),
+        const Text("Download Projects", textAlign: TextAlign.left),
+        const Divider(),
         Expanded(
-          child: projects.isEmpty
-              ? const Center(child: Text("No projects found."))
-              : ListView.builder(
-                  itemCount: projects.length,
-                  itemBuilder: (context, index) {
-                    return ProjectItem(project: projects[index]);
-                  },
-                ),
+          child: projectsAsync.when(
+            data: (projects) {
+              if (projects.isEmpty) {
+                return const Center(child: Text("No projects found."));
+              }
+              return ListView.builder(
+                itemCount: projects.length,
+                itemBuilder: (context, index) {
+                  return ProjectItem(project: projects[index]);
+                },
+              );
+            },
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (err, stack) =>
+                Center(child: Text("Error loading projects: $err")),
+          ),
         ),
       ],
     );
   }
 }
 
-class ProjectItem extends StatelessWidget {
+class ProjectItem extends ConsumerWidget {
   final ProjectModel project;
 
   const ProjectItem({super.key, required this.project});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Card(
       elevation: 0,
       color: Colors.grey.shade200,
@@ -51,7 +59,7 @@ class ProjectItem extends StatelessWidget {
         },
         trailing: IconButton(
           onPressed: () {
-            openProjectModal(context, project);
+            openProjectModal(context, project, ref);
           },
           icon: Icon(Icons.more_vert),
         ),

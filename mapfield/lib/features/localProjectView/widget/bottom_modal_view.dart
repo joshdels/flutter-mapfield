@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mapfield/data/models/project_models.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mapfield/data/providers/projectlist_provider.dart';
 
-void openProjectModal(BuildContext context, ProjectModel project) {
+void openProjectModal(
+  BuildContext context,
+  ProjectModel project,
+  WidgetRef ref,
+) {
   showModalBottomSheet(
     context: context,
     shape: const RoundedRectangleBorder(
@@ -35,7 +41,10 @@ void openProjectModal(BuildContext context, ProjectModel project) {
             ListTile(
               leading: const Icon(Icons.delete),
               title: const Text("Delete Project"),
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+                ref.read(projectListProvider.notifier).deleteProject(project.id);
+              },
             ),
           ],
         ),

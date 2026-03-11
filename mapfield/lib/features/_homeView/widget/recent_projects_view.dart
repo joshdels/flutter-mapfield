@@ -9,26 +9,36 @@ class ProjectView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final recentProjects = ref.watch(projectListLatestProvider);
+    final recentProjectsAsync = ref.watch(projectListLatestProvider);
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Padding(
           padding: EdgeInsets.symmetric(vertical: 16.0),
           child: Text(
             "Recent Projects",
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
         ),
         Expanded(
-          child: ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            itemCount: recentProjects.length,
-            itemBuilder: (context, index) {
-              final project = recentProjects[index];
-              return ProjectItem(project: project);
+          child: recentProjectsAsync.when(
+            data: (List<ProjectModel> projects) {
+              if (projects.isEmpty) {
+                return const Center(
+                  child: Text("No projects yet."),
+                );
+              }
+
+              return ListView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                itemCount: projects.length,
+                itemBuilder: (context, index) {
+                  return ProjectItem(project: projects[index]);
+                },
+              );
             },
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (error, stack) => Center(child: Text("Error: $error")),
           ),
         ),
       ],

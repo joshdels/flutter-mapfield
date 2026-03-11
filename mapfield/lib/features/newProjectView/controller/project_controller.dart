@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mapfield/data/models/project_models.dart';
 import 'package:mapfield/data/providers/projectlist_provider.dart';
-import 'package:mapfield/data/repository/project_repository.dart';
 import 'package:mapfield/features/newProjectView/providers/fields_provider.dart';
 import 'package:mapfield/features/newProjectView/providers/projectname_provider.dart';
 import 'package:mapfield/features/newProjectView/widgets/basemap_view.dart';
@@ -20,14 +19,12 @@ class ProjectController extends Notifier<ProjectSaveStatus> {
       final basemap = ref.read(selectedBasemapProvider);
       final rawFields = ref.read(fieldsProvider);
 
-      if (name.isEmpty) {
-        throw Exception("Project name cannot be empty");
-      }
+      if (name.isEmpty) throw Exception("Project name cannot be empty");
 
       final mappedFields = rawFields.map((f) => f.toJson()).toList();
 
       final newProject = ProjectModel(
-        uid: DateTime.now().millisecondsSinceEpoch.toString(),
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
         name: name,
         selectedBasemap: basemap,
         createdAt: DateTime.now(),
@@ -39,18 +36,21 @@ class ProjectController extends Notifier<ProjectSaveStatus> {
         centerLongitude: 0.0,
       );
 
-      final repository = ref.read(projectRepositoryProvider);
-      await repository.saveProject(newProject);
+      await ref.read(projectListProvider.notifier).addProject(newProject);
 
-      ref.invalidate(projectListProvider);
-      ref.invalidate(projectnameProvider);
-      ref.invalidate(selectedBasemapProvider);
-      ref.invalidate(fieldsProvider);
+      _resetForm();
 
       state = ProjectSaveStatus.success;
     } catch (e) {
+      print("Error creating project: $e");
       state = ProjectSaveStatus.error;
     }
+  }
+
+  void _resetForm() {
+    ref.invalidate(projectnameProvider);
+    ref.invalidate(selectedBasemapProvider);
+    ref.invalidate(fieldsProvider);
   }
 }
 

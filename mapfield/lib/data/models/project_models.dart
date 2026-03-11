@@ -1,5 +1,7 @@
+import 'dart:convert';
+
 class ProjectModel {
-  final String uid;
+  final String id;
   final String name;
   final String selectedBasemap;
   final DateTime createdAt;
@@ -11,7 +13,7 @@ class ProjectModel {
   final double centerLongitude;
 
   ProjectModel({
-    required this.uid,
+    required this.id,
     required this.name,
     required this.selectedBasemap,
     required this.createdAt,
@@ -25,7 +27,7 @@ class ProjectModel {
 
   factory ProjectModel.fromJson(Map<String, dynamic> json) {
     return ProjectModel(
-      uid: json['uid'] ?? '',
+      id: json['id']?.toString() ?? json['id']?.toString() ?? '',
       name: json['name'] ?? '',
       selectedBasemap: json['selectedBasemap'] ?? 'streets',
       createdAt: json['createdAt'] != null
@@ -35,7 +37,9 @@ class ProjectModel {
       lastOpened: json['lastOpened'] != null
           ? DateTime.parse(json['lastOpened'])
           : DateTime.now(),
-      fields: List<Map<String, dynamic>>.from(json['fields'] ?? []),
+      fields: json['fields'] is String
+          ? List<Map<String, dynamic>>.from(jsonDecode(json['fields']))
+          : List<Map<String, dynamic>>.from(json['fields'] ?? []),
       zoomLevel: (json['zoomLevel'] ?? 2.0).toDouble(),
       centerLatitude: (json['centerLatitude'] ?? 0.0).toDouble(),
       centerLongitude: (json['centerLongitude'] ?? 0.0).toDouble(),
@@ -44,13 +48,13 @@ class ProjectModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'uid': uid,
+      'id': id,
       'name': name,
       'selectedBasemap': selectedBasemap,
       'createdAt': createdAt.toIso8601String(),
       'createdBy': createdBy,
       'lastOpened': lastOpened.toIso8601String(),
-      'fields': fields,
+      'fields': jsonEncode(fields),
       'zoomLevel': zoomLevel,
       'centerLatitude': centerLatitude,
       'centerLongitude': centerLongitude,

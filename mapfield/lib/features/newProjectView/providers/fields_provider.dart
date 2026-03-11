@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/project_field.dart';
+import '../../../data/models/project_field.dart';
 
 class FieldsNotifier extends Notifier<List<ProjectField>> {
   @override

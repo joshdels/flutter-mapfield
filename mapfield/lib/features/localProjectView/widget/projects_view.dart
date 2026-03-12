@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mapfield/data/models/project_models.dart';
-import 'package:mapfield/data/providers/projectlist_provider.dart';
+import 'package:mapfield/data/providers/project_search_provider.dart';
 import 'package:mapfield/features/localProjectView/widget/bottom_modal_view.dart';
 import 'package:mapfield/core/routing/route_names.dart';
 

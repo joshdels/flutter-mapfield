@@ -1,7 +1,6 @@
 import "package:flutter/material.dart";
 import "package:mapfield/features/mapView/wigets/modal/layer_modal.dart";
 import "package:mapfield/features/mapView/wigets/modal/more_modal.dart";
-import "package:mapfield/core/routing/route_names.dart";
 
 class NavbarView extends StatelessWidget {
   const NavbarView({super.key});
@@ -12,7 +11,7 @@ class NavbarView extends StatelessWidget {
       {
         "icon": Icons.arrow_back,
         "label": "Back",
-        "onPressed": () => Navigator.pushNamed(context, RouteNames.home),
+        "onPressed": () => Navigator.pop(context),
       },
       {
         "icon": Icons.sync,

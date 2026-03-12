@@ -25,6 +25,15 @@ class ProjectListNotifier extends AsyncNotifier<List<ProjectModel>> {
     });
   }
 
+  Future<void> updateProject(ProjectModel project) async {
+  await _db.updateProject(project);
+
+  state = await AsyncValue.guard(() async {
+    return await _db.getAllProjects();
+  });
+}
+
+
   Future<void> deleteProject(String id) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -54,36 +63,5 @@ final projectListLatestProvider = Provider<AsyncValue<List<ProjectModel>>>((
       ..sort((a, b) => b.lastOpened.compareTo(a.lastOpened));
 
     return sorted.take(3).toList();
-  });
-});
-
-class ProjectSearchNotifier extends Notifier<String> {
-  @override
-  String build() => "";
-
-  void updateSearch(String query) {
-    state = query;
-  }
-
-  void clear() {
-    state = "";
-  }
-}
-
-final projectSearchProvider = NotifierProvider<ProjectSearchNotifier, String>(
-  () {
-    return ProjectSearchNotifier();
-  },
-);
-
-final filteredProjectsProvider = Provider<AsyncValue<List<ProjectModel>>>((
-  ref,
-) {
-  final projectsAsync = ref.watch(projectListProvider);
-  final query = ref.watch(projectSearchProvider).toLowerCase();
-
-  return projectsAsync.whenData((projects) {
-    if (query.isEmpty) return projects;
-    return projects.where((p) => p.name.toLowerCase().contains(query)).toList();
   });
 });

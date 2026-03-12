@@ -67,6 +67,34 @@ class ProjectModel {
     };
   }
 
+  ProjectModel copyWith({
+    String? id,
+    String? name,
+    String? selectedBasemap,
+    String? tileUrl,
+    DateTime? createdAt,
+    String? createdBy,
+    DateTime? lastOpened,
+    List<Map<String, dynamic>>? fields,
+    double? zoomLevel,
+    double? centerLatitude,
+    double? centerLongitude,
+  }) {
+    return ProjectModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      selectedBasemap: selectedBasemap ?? this.selectedBasemap,
+      tileUrl: tileUrl ?? this.tileUrl,
+      createdAt: createdAt ?? this.createdAt,
+      createdBy: createdBy ?? this.createdBy,
+      lastOpened: lastOpened ?? this.lastOpened,
+      fields: fields ?? this.fields,
+      zoomLevel: zoomLevel ?? this.zoomLevel,
+      centerLatitude: centerLatitude ?? this.centerLatitude,
+      centerLongitude: centerLongitude ?? this.centerLongitude,
+    );
+  }
+
   @override
   String toString() {
     return 'ProjectModel(id: $id, name: $name, fieldsCount: ${fields.length}, selectedBasemap: $selectedBasemap,  tileUrl: $tileUrl,)';

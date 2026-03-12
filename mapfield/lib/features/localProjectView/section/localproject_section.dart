@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:mapfield/shared/widgets/search_view.dart";
 import "package:mapfield/features/localProjectView/widget/projects_view.dart";
 import "package:mapfield/features/localProjectView/widget/create_project_view.dart";
+import "package:mapfield/core/routing/route_names.dart";
 
 class LocalProjectSection extends StatelessWidget {
   const LocalProjectSection({super.key});
@@ -12,7 +13,12 @@ class LocalProjectSection extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Local Projects"),
         centerTitle: true,
-        leading: const BackButton(),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pushNamed(context, RouteNames.home);
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
       ),
       body: const Padding(
         padding: EdgeInsets.all(20),

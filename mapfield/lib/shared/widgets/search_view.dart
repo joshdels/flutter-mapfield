@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mapfield/data/providers/projectlist_provider.dart';
+import 'package:mapfield/data/providers/project_search_provider.dart';
 
 class SearchProjectView extends ConsumerWidget {
   const SearchProjectView({super.key});

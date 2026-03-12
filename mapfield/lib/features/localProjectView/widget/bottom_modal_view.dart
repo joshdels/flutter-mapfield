@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mapfield/data/models/project_models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mapfield/data/providers/projectlist_provider.dart';
+import 'package:mapfield/data/providers/project_list_provider.dart';
 
 void openProjectModal(
   BuildContext context,

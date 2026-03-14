@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:mapfield/data/models/gis_layer_models.dart';
 import 'package:mapfield/data/models/project_models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mapfield/data/providers/map_position_provider.dart';
 
 class MapView extends ConsumerWidget {
   final ProjectModel project;
+  final List<GISLayerModel> layers;
 
-  const MapView({super.key, required this.project});
+  const MapView({super.key, required this.project, required this.layers});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -32,6 +34,9 @@ class MapView extends ConsumerWidget {
           urlTemplate: project.tileUrl,
           userAgentPackageName: 'com.example.app',
         ),
+
+        ...layers.where((layer) => layer.type ==)
+
       ],
     );
   }

@@ -43,3 +43,25 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+
+# Flutter build artifacts
+/build/
+/ios/Flutter/.last_build_id
+/.dart_tool/
+/.flutter-plugins-dependencies
+/pub/
+/pubspec.lock
+
+# Android launcher icons
+/android/app/src/main/res/mipmap-*
+
+# iOS App Icons
+/ios/Runner/Assets.xcassets/AppIcon.appiconset/
+
+# Generated plugin files
+/windows/flutter/generated_plugin_registrant.cc
+/windows/flutter/generated_plugins.cmake
+/linux/flutter/generated_plugin_registrant.cc
+/linux/flutter/generated_plugins.cmake
+/macos/Flutter/GeneratedPluginRegistrant.swift

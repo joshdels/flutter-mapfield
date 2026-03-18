@@ -7,8 +7,12 @@ import 'package:mapfield/data/models/gis_layer_models.dart';
 import 'package:mapfield/data/services/project_services.dart';
 import 'package:mapfield/data/utility/geopackage_handler.dart';
 
-final gisLayerProvider = FutureProvider.family<List<Widget>, String>((ref, projectId) async {
-  final List<GISLayerModel> layerModels = await DatabaseService.instance.getGisLayers(projectId);
+final gisLayerProvider = FutureProvider.family<List<Widget>, String>((
+  ref,
+  projectId,
+) async {
+  final List<GISLayerModel> layerModels = await DatabaseService.instance
+      .getGisLayers(projectId);
 
   final List<Widget> allMapWidgets = [];
   final repo = GeoPackageRepository();
@@ -17,7 +21,8 @@ final gisLayerProvider = FutureProvider.family<List<Widget>, String>((ref, proje
   for (final layer in layerModels) {
     try {
       final features = await repo.fetchFeatures(layer.path);
-      
+      print("Features loaded: ${features.length}");
+
       // 3. Convert these features into the Marker/Polyline/Polygon layers
       final widgets = _convertToMapWidgets(features);
       allMapWidgets.addAll(widgets);
@@ -31,7 +36,6 @@ final gisLayerProvider = FutureProvider.family<List<Widget>, String>((ref, proje
   return allMapWidgets;
 });
 
-
 List<Widget> _convertToMapWidgets(List<GeoFeature> features) {
   final markers = <Marker>[];
   final polylines = <Polyline>[];
@@ -39,6 +43,7 @@ List<Widget> _convertToMapWidgets(List<GeoFeature> features) {
 
   for (final feature in features) {
     final geometry = feature.geometry;
+    print(geometry);
 
     // 1. If it's a Point, make a Marker
     if (geometry is GeoPoint) {
@@ -67,6 +72,17 @@ List<Widget> _convertToMapWidgets(List<GeoFeature> features) {
           borderStrokeWidth: 2.0,
         ),
       );
+    } else if (geometry is GeoMultiPolygon) {
+      for (final poly in geometry.polygons) {
+        polygons.add(
+          Polygon(
+            points: poly,
+            color: Colors.green,
+            borderColor: Colors.green,
+            borderStrokeWidth: 2.0,
+          ),
+        );
+      }
     }
   }
 

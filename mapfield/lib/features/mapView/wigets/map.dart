@@ -17,19 +17,23 @@ class MapView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final mapPosition = ref.watch(mapPositionProvider);
+
     return FlutterMap(
       options: MapOptions(
-        initialCenter: LatLng(project.centerLatitude, project.centerLongitude),
+        initialCenter: LatLng(
+          project.centerLatitude,
+          project.centerLongitude,
+        ),
         initialZoom: project.zoomLevel,
         onPositionChanged: (MapCamera position, bool hasGesture) {
+          final center = position.center;
+          final zoom = position.zoom;
+
           if (hasGesture) {
             ref
                 .read(mapPositionProvider.notifier)
-                .updatePosition(
-                  position.center.latitude,
-                  position.center.longitude,
-                  position.zoom,
-                );
+                .updatePosition(center.latitude, center.longitude, zoom);
           }
         },
       ),

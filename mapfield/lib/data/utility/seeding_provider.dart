@@ -32,12 +32,11 @@ Future<String> seedGeoPackage(String assetName) async {
   return filePath;
 }
 
-
-Future <void> setupInitialLayer(String projectId) async {
-  String localPath = await seedGeoPackage('data/forest.gpkg');
+Future<void> setupInitialLayer(String projectId) async {
+  String localPath = await seedGeoPackage('data/test2.gpkg');
 
   final myLayer = GISLayerModel(
-    id: const Uuid().v4(), 
+    id: const Uuid().v4(),
     projectId: projectId,
     name: 'Main Map',
     type: 'vector',
@@ -45,11 +44,10 @@ Future <void> setupInitialLayer(String projectId) async {
     createdAt: DateTime.now(),
   );
 
-  // await DatabaseService.instance.insertGisLayer(myLayer);
+  await DatabaseService.instance.insertGisLayer(myLayer);
   await insertLayer(myLayer);
 
   print("Layer ready at: $myLayer");
-  
 }
 
 // subjected to riverpods, needs refactoring

@@ -20,14 +20,18 @@ class DatabaseService {
     String path;
     if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
       final directory = await getApplicationSupportDirectory();
-      path = join(directory.path, 'my_app_database_v2.db');
+      path = join(directory.path, 'my_app_database.db');
     } else {
       path = join(await getDatabasesPath(), 'my_app_database.db');
     }
 
+    // Remove this in production; only for dev reset
+    await deleteDatabase(path);
+
     return await openDatabase(path, version: 1, onCreate: _createDb);
   }
 
+  // Create tables
   Future<void> _createDb(Database db, int version) async {
     await db.execute('''
       CREATE TABLE $_projectsTable  (
@@ -47,77 +51,80 @@ class DatabaseService {
 
     await db.execute('''
       CREATE TABLE $_gisLayersTable (
-        id TEXT PRIMIRY KEY,
+        id TEXT PRIMARY KEY,
         projectId TEXT NOT NULL,
         name TEXT NOT NULL,
         type TEXT,
         path TEXT,
-        createdAt Text,
-        FOREIGN KEY(projectId) REFERENCES projects(id) ON DELETE CASCADE  
+        createdAt TEXT,
+        FOREIGN KEY(projectId) REFERENCES $_projectsTable(id) ON DELETE CASCADE
       )
-      ''');
+    ''');
   }
 
-  // --- CRUD Operations ---
-
+  // --- Projects CRUD with transaction ---
   Future<int> insertProject(ProjectModel project) async {
     final db = await database;
-    return await db.insert(
-      _projectsTable,
-      project.toJson(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+    return await db.transaction((txn) async {
+      return await txn.insert(
+        _projectsTable,
+        project.toJson(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+    });
   }
 
   Future<List<ProjectModel>> getAllProjects() async {
     final db = await database;
-    final List<Map<String, dynamic>> maps = await db.query(
-      _projectsTable,
-      orderBy: 'lastOpened DESC',
-    );
+    final maps = await db.query(_projectsTable, orderBy: 'lastOpened DESC');
     return maps.map((map) => ProjectModel.fromJson(map)).toList();
   }
 
   Future<int> updateProject(ProjectModel project) async {
     final db = await database;
-    return await db.update(
-      _projectsTable,
-      project.toJson(),
-      where: 'id = ?',
-      whereArgs: [project.id],
-    );
+    return await db.transaction((txn) async {
+      return await txn.update(
+        _projectsTable,
+        project.toJson(),
+        where: 'id = ?',
+        whereArgs: [project.id],
+      );
+    });
   }
 
   Future<int> deleteProject(String id) async {
     final db = await database;
-    return await db.delete(_projectsTable, where: 'id = ?', whereArgs: [id]);
+    return await db.transaction((txn) async {
+      return await txn.delete(_projectsTable, where: 'id = ?', whereArgs: [id]);
+    });
   }
 
   Future<void> checkDatabaseStorage() async {
     final db = await database;
     var tables = await db.rawQuery(
-      "SELECT name FROM sqlite_master WHERE type='table' AND name='$_projectsTable '",
+      "SELECT name FROM sqlite_master WHERE type='table' AND name='$_projectsTable'",
     );
     print('Table check: $tables');
 
-    var count = await db.rawQuery('SELECT COUNT(*) FROM $_projectsTable ');
+    var count = await db.rawQuery('SELECT COUNT(*) FROM $_projectsTable');
     print('Row count in $_projectsTable : ${count.first['COUNT(*)']}');
   }
 
-  // GIS CRUD
-
+  // --- GIS Layers CRUD with transaction ---
   Future<int> insertGisLayer(GISLayerModel layer) async {
     final db = await database;
-    return await db.insert(
-      _gisLayersTable,
-      layer.toJson(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+    return await db.transaction((txn) async {
+      return await txn.insert(
+        _gisLayersTable,
+        layer.toJson(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+    });
   }
 
   Future<List<GISLayerModel>> getGisLayers(String projectId) async {
     final db = await database;
-    final List<Map<String, dynamic>> maps = await db.query(
+    final maps = await db.query(
       _gisLayersTable,
       where: 'projectId = ?',
       whereArgs: [projectId],
@@ -127,16 +134,31 @@ class DatabaseService {
 
   Future<int> updateGisLayer(GISLayerModel layer) async {
     final db = await database;
-    return await db.update(
-      _gisLayersTable,
-      layer.toJson(),
-      where: 'id = ?',
-      whereArgs: [layer.id],
-    );
+    return await db.transaction((txn) async {
+      return await txn.update(
+        _gisLayersTable,
+        layer.toJson(),
+        where: 'id = ?',
+        whereArgs: [layer.id],
+      );
+    });
   }
 
   Future<int> deleteGisLayer(String id) async {
     final db = await database;
-    return await db.delete(_gisLayersTable, where: 'id = ?', whereArgs: [id]);
+    return await db.transaction((txn) async {
+      return await txn.delete(_gisLayersTable, where: 'id = ?', whereArgs: [id]);
+    });
+  }
+
+  // --- Batch insert example (project + layers) ---
+  Future<void> insertProjectWithLayers(ProjectModel project, List<GISLayerModel> layers) async {
+    final db = await database;
+    await db.transaction((txn) async {
+      await txn.insert(_projectsTable, project.toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
+      for (var layer in layers) {
+        await txn.insert(_gisLayersTable, layer.toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
+      }
+    });
   }
 }

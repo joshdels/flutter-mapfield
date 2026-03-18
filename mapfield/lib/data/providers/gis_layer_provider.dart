@@ -8,3 +8,6 @@ final gisLayerProvider = FutureProvider.family<List<GISLayerModel>, String>((
 ) async {
   return await DatabaseService.instance.getGisLayers(projectId);
 });
+
+
+// Methods for GIS files
